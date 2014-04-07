@@ -1,0 +1,14 @@
+stackingcranes > stackingarea (5x3)
+lane in stackingarea > 2 hoog
+crane kan niet hoger dan 3
+vrachtwagen > carrier > overdrachtsplaats
+agv gebied > carrier(avg) > ship
+gebied mag maar door een voertuig bezet worden
+containers 20,30,40 foot
+container oppakken > uitschuiven tot goede lengte > lock
+elektrastoring > noodrem mogen alleen hoog, niet teveel snelheid.
+kabeltrommel moet meedraaien vanwege ijsvoorming
+als kabbeltrommel wel draait, kraan rijd niet, stoppen
+container kan kleiner zijn dan aangegeven, als spreader lager is, geef een foutmelding
+eindschakelaars
+4mps snelheid
