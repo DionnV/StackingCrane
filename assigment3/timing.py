@@ -33,9 +33,9 @@ class Timing(Chart):
 
     def define(self, world):
 
-        self.channel(world.crane.xMotor, blue, 0, 30, 50)
-        self.channel(world.crane.yMotor, yellow, 0, 4, 50)
-        self.channel(world.crane.zMotor, aqua, 0, 3, 50)
+        self.channel(world.crane.xPosition, blue, 0, 30, 50)
+        self.channel(world.crane.yPosition, yellow, 0, 4, 50)
+        self.channel(world.crane.zPosition, aqua, 0, 3, 50)
         self.channel(world.crane.spreaderPosition, teal, 30, 50, 50)
 
         #blue,lime,yellow,silver,aqua,purple,navy,teal,fuchsia,maroon
