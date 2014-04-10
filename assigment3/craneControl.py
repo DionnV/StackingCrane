@@ -105,7 +105,11 @@ class CraneControl (Module):
 		self.xMotor.set(-1, self.X == -1)
 
 		# check if cablereel is turning 
-		self.xMotor.set(0, self.xVelocity != 0 and self.cableReelMoving == 0)
+		self.xMotor.set(0, self.xVelocity > 0.1 and self.cableReelMoving == 0)
+
+		# Only move if spreader is at the top
+		self.xMotor.set(0, self.zPosition >= 0.1)
+		self.X.set(0, self.zPosition >= 0.1)
 
 		# Do not move when something else is moving
 		self.xMotor.set(0, self.platformBackMoving == 1 or self.platformFrontMoving == 1)
@@ -121,6 +125,10 @@ class CraneControl (Module):
 		self.yMotor.set(1, self.Y == 1)
 		self.yMotor.set(0, self.Y == 0)
 		self.yMotor.set(-1, self.Y == -1)
+
+		# Only move if spreader is at the top
+		self.yMotor.set(0, self.zPosition > 0.1)
+		self.Y.set(0, self.zPosition > 0.1)
 
 		# Do not move when something else is moving
 		self.yMotor.set(0, self.platformBackMoving == 1 or self.platformFrontMoving == 1)
@@ -147,7 +155,7 @@ class CraneControl (Module):
 		self.Z.set(0, self.zPosition < 0.05 and self.Z == -1)
 
 	def emergBrake(self):
-		self.emergencyBrake.set(1, self.Emergency, 0)
+		self.emergencyBrake.set(1, self.Emergency and self.xVelocity < 2, 0)
 		# stop motors only way to stop crane is to stop the motor
 		self.xMotor.set(0, self.emergencyBrake)
 		self.yMotor.set(0, self.emergencyBrake)
@@ -155,6 +163,7 @@ class CraneControl (Module):
 
 	def lockTwistlocks(self):
 		self.spreaderLockSet.set(1, self.spreaderCanLock == 1 and self.LockSpreader, 0)
+		self.LockSpreader.mark(1, self.spreaderLockSet, 0)
 
 	def setSpreaderSize(self):
 		self.spreaderSet.set(30, self.SpreaderWidth == 30)
