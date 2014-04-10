@@ -38,6 +38,8 @@ class CraneControl (Module):
 		self.Y = Register(0)
 		self.Z = Register(0)
 		self.Emergency = Marker(0)
+		self.SpreaderWidth = Register(30)
+		self.LockSpreader = Marker(0)
 
 		self.group("input", False)
 		
@@ -93,12 +95,17 @@ class CraneControl (Module):
 		self.moveY();
 		self.moveZ();
 		self.emergBrake();
-		self.lockTwistlocks();		
+		self.lockTwistlocks();	
+		self.setSpreaderSize();
+
 
 	def moveX(self):
 		self.xMotor.set(1, self.X == 1)
 		self.xMotor.set(0, self.X == 0)
 		self.xMotor.set(-1, self.X == -1)
+
+		# check if cablereel is turning 
+		self.xMotor.set(0, self.xVelocity != 0 and self.cableReelMoving == 0)
 
 		# Endstops
 		self.xMotor.set(0, self.endStopBack == 1 and self.X == 1)
@@ -111,10 +118,21 @@ class CraneControl (Module):
 		self.yMotor.set(0, self.Y == 0)
 		self.yMotor.set(-1, self.Y == -1)
 
+		self.yMotor.set(0, self.yPosition > 3.95 and self.Y == 1)
+		self.Y.set(0, self.yPosition > 3.95 and self.Y == 1)
+		self.yMotor.set(0, self.yPosition < 0.05 and self.Y == -1)
+		self.Y.set(0, self.yPosition < 0.05 and self.Y == -1)
+
+
 	def moveZ(self):
 		self.zMotor.set(1, self.Z == 1)
 		self.zMotor.set(0, self.Z == 0)
 		self.zMotor.set(-1, self.Z == -1)
+
+		self.zMotor.set(0, self.zPosition > 2.95 and self.Z == 1)
+		self.Z.set(0, self.zPosition > 2.95 and self.Z == 1)
+		self.zMotor.set(0, self.zPosition < 0.05 and self.Z == -1)
+		self.Z.set(0, self.zPosition < 0.05 and self.Z == -1)
 
 	def emergBrake(self):
 		self.emergencyBrake.set(1, self.Emergency, 0)
@@ -124,4 +142,9 @@ class CraneControl (Module):
 		self.zMotor.set(0, self.emergencyBrake)
 
 	def lockTwistlocks(self):
-		pass;
+		self.spreaderLockSet.set(1, self.spreaderCanLock == 1 and self.LockSpreader, 0)
+
+	def setSpreaderSize(self):
+		self.spreaderSet.set(30, self.SpreaderWidth == 30)
+		self.spreaderSet.set(40, self.SpreaderWidth == 40)
+		self.spreaderSet.set(50, self.SpreaderWidth == 50)
