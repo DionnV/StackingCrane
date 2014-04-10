@@ -92,7 +92,9 @@ class Crane(Module):
 		self.updateEngine(self.yMotor,self.yPosition,self.ySpeed,self.yMaxSpeed,self.yFriction, 0 , 4)
 		self.updateEngine(self.zMotor,self.zPosition,self.zSpeed,self.zMaxSpeed,self.zFriction, 0 , 3)
 
-		self.cableReelMoving.set(math.floor(self.xMotor._state),self.xMotor > 0,math.ceil(self.xMotor._state))
+		self.cableReelMoving.set(1,self.xSpeed > 0)
+		self.cableReelMoving.set(-1,self.xSpeed < 0)
+		self.cableReelMoving.set(0,self.xSpeed == 0)
 		self.endStopBack.set(1,self.xPosition > 29.95,0)
 		self.endStopFront.set(1,self.xPosition < 0.04,0)
 		
@@ -105,4 +107,5 @@ class Crane(Module):
 		friction.set(0.87,(motor < 0.1 and motor > -0.1),0.98)
 		wantedspeed = ((motor*World.period*maxspeed) + speed)*friction*abs(self.emergencyBrake-1)
 		speed.set(wantedspeed, wantedspeed < maxspeed)
+		speed.set(0, motor == 0 and wantedspeed < 0.01)
 		position.set(speed*World.period + position,((speed*World.period + position) < upperbound) and ((speed*World.period + position) > lowerbound),round(position._state))
