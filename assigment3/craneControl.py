@@ -29,12 +29,24 @@ from math import *
 class CraneControl (Module):
 	def __init__ (self, name):
 		Module.__init__ (self, name)
-		self.run = Runner();
+		#self.run = Runner();
 
+		self.page('controls')
+		
+		self.group('Movement', True)
+		self.X = Register(0)
+		self.Y = Register(0)
+		self.Z = Register(0)
+		self.Emergency = Marker(0)
+
+		self.group("input", False)
+		
 		#input
 		self.xPosition = Register(0) # from 0 to 30, containersizeunit :p
 		self.yPosition = Register(0) # from 0 to 4, containersizeunit :p
 		self.zPosition = Register(0) # from 0 to 3, containersizeunit :p
+
+		self.xVelocity = Register(0)
 
 		self.spreaderCanLock = Register(0) # 1 or 0
 		self.spreaderPosition = Register(0) # 30 to 50
@@ -57,24 +69,59 @@ class CraneControl (Module):
 		self.spreaderLockSet = Register(0) # 1 or 0
 		self.emergencyBrake = Register(0) # 1 or 0
 
-		
 	def input (self, world):
-		self.xPosition.set(world.craneControl.xPosition)
-		self.yPosition.set(world.craneControl.yPosition)
-		self.zPosition.set(world.craneControl.zPosition)
+		self.xPosition.set(world.crane.xPosition)
+		self.yPosition.set(world.crane.yPosition)
+		self.zPosition.set(world.crane.zPosition)
 
-		self.spreaderCanLock.set(world.craneControl.spreaderCanLock)
-		self.spreaderPosition.set(world.craneControl.spreaderPosition)
+		self.spreaderCanLock.set(world.crane.spreaderCanLock)
+		self.spreaderPosition.set(world.crane.spreaderPosition)
 
-		self.platformFrontMoving.set(world.craneControl.platformFrontMoving)
-		self.platformBackMoving.set(world.craneControl.platformBackMoving)
-		self.platformFrontAgv.set(world.craneControl.platformFrontAgv)
-		self.platformBackAgv.set(world.craneControl.platformBackAgv)
+		self.platformFrontMoving.set(world.crane.platformFrontMoving)
+		self.platformBackMoving.set(world.crane.platformBackMoving)
+		self.platformFrontAgv.set(world.crane.platformFrontAgv)
+		self.platformBackAgv.set(world.crane.platformBackAgv)
 
-		self.cableReelMoving.set(world.craneControl.cableReelMoving)
-		self.endStopFront.set(world.craneControl.endStopFront)
-		self.endStopBack.set(world.craneControl.endStopBack)
+		self.cableReelMoving.set(world.crane.cableReelMoving)
+		self.endStopFront.set(world.crane.endStopFront)
+		self.endStopBack.set(world.crane.endStopBack)
+
+		self.xVelocity.set(world.crane.xSpeed)
 	
 	def sweep (self):
+		self.moveX();
+		self.moveY();
+		self.moveZ();
+		self.emergBrake();
+		self.lockTwistlocks();		
+
+	def moveX(self):
+		self.xMotor.set(1, self.X == 1)
+		self.xMotor.set(0, self.X == 0)
+		self.xMotor.set(-1, self.X == -1)
+
+		# Endstops
+		self.xMotor.set(0, self.endStopBack == 1 and self.X == 1)
+		self.X.set(0, self.endStopBack == 1 and self.X == 1)
+		self.xMotor.set(0, self.endStopFront == 1 and self.X == -1)
+		self.X.set(0, self.endStopFront == 1 and self.X == -1)		
+
+	def moveY(self):
+		self.yMotor.set(1, self.Y == 1)
+		self.yMotor.set(0, self.Y == 0)
+		self.yMotor.set(-1, self.Y == -1)
+
+	def moveZ(self):
+		self.zMotor.set(1, self.Z == 1)
+		self.zMotor.set(0, self.Z == 0)
+		self.zMotor.set(-1, self.Z == -1)
+
+	def emergBrake(self):
+		self.emergencyBrake.set(1, self.Emergency, 0)
+		# stop motors only way to stop crane is to stop the motor
+		self.xMotor.set(0, self.emergencyBrake)
+		self.yMotor.set(0, self.emergencyBrake)
+		self.zMotor.set(0, self.emergencyBrake)
+
+	def lockTwistlocks(self):
 		pass;
-		
