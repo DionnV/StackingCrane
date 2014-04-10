@@ -87,6 +87,11 @@ class Crane(Module):
 		self.spreaderLockSet.set(world.craneControl.spreaderLockSet)
 		self.emergencyBrake.set(world.craneControl.emergencyBrake)
 
+		self.platformFrontMoving.set(world.avg.avgFrontMoving)
+		self.platformBackMoving.set(world.avg.avgBackMoving)
+		self.platformFrontAgv.set(round(world.avg.avgFrontPos._state))
+		self.platformBackAgv.set(round(world.avg.avgBackPos._state))
+
 	def sweep(self):
 		self.updateEngine(self.xMotor,self.xPosition,self.xSpeed,self.xMaxSpeed,self.xFriction, 0 , 30)
 		self.updateEngine(self.yMotor,self.yPosition,self.ySpeed,self.yMaxSpeed,self.yFriction, 0 , 4)

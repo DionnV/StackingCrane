@@ -28,5 +28,6 @@ from SimPyLC import *
 from crane import *
 from craneControl import *
 from timing import *
+from avg import *
 		
-World (CraneControl('craneControl'),Crane ('crane'),Timing ('timing'))
+World (CraneControl('craneControl'),Crane ('crane'),Avg('avg'),Timing ('timing'))
