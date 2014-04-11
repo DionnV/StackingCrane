@@ -41,7 +41,10 @@ class CraneControl (Module):
 		self.SpreaderWidth = Register(30)
 		self.LockSpreader = Marker(0)
 
-		self.group("input", False)
+		self.group('error')
+		self.SpeaderSizeError = Register(0)
+
+		self.group("input", True)
 		
 		#input
 		self.xPosition = Register(0) # from 0 to 30, containersizeunit :p
@@ -122,17 +125,17 @@ class CraneControl (Module):
 		self.X.set(0, self.endStopFront == 1 and self.X == -1)		
 
 	def moveY(self):
-		self.yMotor.set(1, self.Y == 1)
+		self.yMotor.set(max(min(1,4-self.yPosition._state),0.3), self.Y == 1)
 		self.yMotor.set(0, self.Y == 0)
-		self.yMotor.set(-1, self.Y == -1)
+		self.yMotor.set(-max(min(1,self.yPosition._state),0.3), self.Y == -1)
 
 		# Only move if spreader is at the top
 		self.yMotor.set(0, self.zPosition > 0.1)
 		self.Y.set(0, self.zPosition > 0.1)
 
 		# Do not move when something else is moving
-		self.yMotor.set(0, self.platformBackMoving == 1 or self.platformFrontMoving == 1)
-		self.Y.set(0, self.platformBackMoving == 1 or self.platformFrontMoving == 1)
+		self.yMotor.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
+		self.Y.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
 
 		self.yMotor.set(0, self.yPosition > 3.95 and self.Y == 1)
 		self.Y.set(0, self.yPosition > 3.95 and self.Y == 1)
@@ -141,13 +144,13 @@ class CraneControl (Module):
 
 
 	def moveZ(self):
-		self.zMotor.set(1, self.Z == 1)
+		self.zMotor.set(max(min(1,3-self.zPosition._state),0.3), self.Z == 1)
 		self.zMotor.set(0, self.Z == 0)
-		self.zMotor.set(-1, self.Z == -1)
+		self.zMotor.set(-max(min(1,self.zPosition._state),0.3), self.Z == -1)
 
 		# Do not move when something else is moving
-		self.zMotor.set(0, self.platformBackMoving == 1 or self.platformFrontMoving == 1)
-		self.Z.set(0, self.platformBackMoving == 1 or self.platformFrontMoving == 1)
+		self.zMotor.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
+		self.Z.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
 
 		self.zMotor.set(0, self.zPosition > 2.95 and self.Z == 1)
 		self.Z.set(0, self.zPosition > 2.95 and self.Z == 1)
