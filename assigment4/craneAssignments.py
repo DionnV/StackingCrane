@@ -104,7 +104,7 @@ class CraneAssignments (Module):
 		self.incrementStage.set(1, self.zPosition > 2.9 and self.stage == 1 and self.assignment == 1)
 		
 		#go to y 4
-		self.Y.set(max(-1,min(1, 4 - self.yPosition._state)), self.stage == 2 and self.assignment == 1)
+		self.Y.set(max(-1,min(1, 3 - self.yPosition._state)), self.stage == 2 and self.assignment == 1)
 		self.incrementStage.set(1, self.yPosition > 3.9 and self.yPosition < 4.1 and self.stage == 2 and self.assignment == 1)
 		
 		#go to setX
@@ -128,7 +128,7 @@ class CraneAssignments (Module):
 		self.incrementStage.set(1, self.zPosition > 2.9 and self.stage == 7 and self.assignment == 1)
 		
 		#go = 0
-		self.go.set(0, self.stage == 8)
+		self.go.set(0, self.stage == 8 and self.assignment == 1)
 
 
 		self.putX.set(self.X)
