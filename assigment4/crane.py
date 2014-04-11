@@ -104,7 +104,7 @@ class Crane(Module):
 		self.endStopFront.set(1,self.xPosition < 0.04,0)
 		
 		self.spreaderPosition.set(self.spreaderSet)
-		self.spreaderCanLock.set(1,self.yPosition > 0.95 and self.yPosition < 1.05 and (self.xPosition > 29.95 or self.xPosition < 0.05))
+		self.spreaderCanLock.set(1,(self.zPosition > 0.95 and self.zPosition < 1.05) or (self.zPosition > 1.95 and self.zPosition < 1.05) or self.zPosition > 2.95)
 		self.spreaderLock.set(1,self.spreaderLockSet == 1 and self.spreaderCanLock == 1)
 		self.spreaderLock.set(0,self.spreaderLockSet == 0)
 

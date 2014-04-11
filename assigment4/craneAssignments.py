@@ -59,6 +59,7 @@ class CraneAssignments (Module):
 		self.yPosition = Register(0) # from 0 to 4, containersizeunit :p
 		self.zPosition = Register(0) # from 0 to 3, containersizeunit :p
 		self.spreaderSize = Register(0) # from 30 to 50
+		self.spreaderLock = Register(0)
 
 
 	def input (self, world):
@@ -66,6 +67,7 @@ class CraneAssignments (Module):
 		self.yPosition.set(world.crane.yPosition)
 		self.zPosition.set(world.crane.zPosition)
 		self.spreaderPosition.set(world.crane.spreaderPosition)
+		self.spreaderLock.set(world.crane.spreaderLock)
 
 	def sweep (self):
 		self.X.set(0)
@@ -77,7 +79,7 @@ class CraneAssignments (Module):
 		#get,stage = 1
 		#go to z 3
 		self.Z.set(1,self.stage == 1 and self.assignment == 2)
-		self.incrementStage.set(1,self.zPosition > 2.9 and self.stage == 1 and self.assignment == 2)
+		self.incrementStage.set(1,self.zPosition > 2.95 and self.stage == 1 and self.assignment == 2)
 		#go to sety,go to setx
 		self.Y.set(max(-1,min(1,self.setY-self.yPosition)),self.stage == 2 and self.assignment == 2)
 		self.X.set(max(-1,min(1,self.setX-self.xPosition)),self.stage == 2 and self.assignment == 2)
@@ -87,8 +89,14 @@ class CraneAssignments (Module):
 		self.SpreaderWidth.set(self.setSize, self.stage == 3 and self.assignment == 2)
 		self.incrementStage.set(1,self.zPosition > self.setZ-0.01 and self.zPosition < self.setZ+0.01 and self.spreaderPosition == self.SpreaderWidth and self.stage == 3 and self.assignment == 2)
 		#speaderlock 1
+		self.LockSpreader.mark(1,self.stage == 4 and self.assignment == 2)
+		self.incrementStage.set(1, self.spreaderLock == 1 and self.stage == 4 and self.assignment == 2)
 		#go to z 3
+		self.Z.set(1,self.stage == 5 and self.assignment == 2)
+		self.incrementStage.set(1,self.zPosition > 2.95 and self.stage == 5 and self.assignment == 2)
 		#go = 0
+		self.go.set(0,self.stage == 6 and self.assignment == 2)
+		self.stage.set(0,self.stage == 6 and self.assignment == 2)
 
 		#put,stage = 1
 		#go to z 3
