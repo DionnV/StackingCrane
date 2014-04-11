@@ -58,7 +58,7 @@ class CraneAssignments (Module):
 		self.xPosition = Register(0) # from 0 to 30, containersizeunit :p
 		self.yPosition = Register(0) # from 0 to 4, containersizeunit :p
 		self.zPosition = Register(0) # from 0 to 3, containersizeunit :p
-		self.spreaderSize = Register(0) # from 0 to 3, containersizeunit :p
+		self.spreaderSize = Register(0) # from 30 to 50
 
 
 	def input (self, world):
@@ -85,7 +85,7 @@ class CraneAssignments (Module):
 		#go to setZ, spreader setSize
 		self.Z.set(max(-1,min(1,self.setZ-self.zPosition)),self.stage == 3 and self.assigment == 2)
 		self.SpreaderWidth.set(self.setSize, self.stage == 3 and self.assigment == 2)
-		self.incrementStage.set(1,self.yPosition > self.setY-0.01 and self.yPosition < self.setY+0.01 and self.xPosition > self.setX-0.01 and self.xPosition < self.setX+0.01 and self.stage == 2 and self.assigment == 2)
+		self.incrementStage.set(1,self.zPosition > self.setZ-0.01 and self.zPosition < self.setZ+0.01 and self.spreaderPosition == self.SpreaderWidth and self.stage == 2 and self.assigment == 2)
 		#speaderlock 1
 		#go to z 3
 		#go = 0
