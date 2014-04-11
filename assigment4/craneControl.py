@@ -38,6 +38,7 @@ class CraneControl (Module):
 		self.Y = Register(0)
 		self.Z = Register(0)
 		self.Emergency = Marker(0)
+		self.Failure = Marker(0)
 		self.SpreaderWidth = Register(30)
 		self.LockSpreader = Marker(0)
 
@@ -104,6 +105,7 @@ class CraneControl (Module):
 		self.moveY();
 		self.moveZ();
 		self.emergBrake();
+		self.failureBrake();
 		self.lockTwistlocks();	
 		self.setSpreaderSize();
 
@@ -166,11 +168,19 @@ class CraneControl (Module):
 		self.Z.set(0, self.zPosition < 0.05 and self.Z == -1)
 
 	def emergBrake(self):
-		self.emergencyBrake.set(1, self.Emergency and self.xVelocity < 2, 0)
+		self.emergencyBrake.set(1, self.Emergency, 0)
 		# stop motors only way to stop crane is to stop the motor
 		self.xMotor.set(0, self.emergencyBrake)
 		self.yMotor.set(0, self.emergencyBrake)
 		self.zMotor.set(0, self.emergencyBrake)
+
+
+	def failureBrake(self):
+		self.emergencyBrake.set(1, self.Failure and self.xVelocity < 0.5 , 0)
+		# stop motors only way to stop crane is to stop the motor
+		self.xMotor.set(0, self.Failure or self.emergencyBrake)
+		self.yMotor.set(0, self.Failure or self.emergencyBrake)
+		self.zMotor.set(0, self.Failure or self.emergencyBrake)
 
 	def lockTwistlocks(self):
 		self.spreaderLockSet.set(1, self.spreaderCanLock == 1 and self.LockSpreader, 0)
