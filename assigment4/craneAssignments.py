@@ -51,6 +51,7 @@ class CraneAssignments (Module):
 		self.SpreaderWidth = Register(30)
 		self.spreaderPosition = Register(0)
 		self.LockSpreader = Marker(0)
+		self.accuracy = Register(0.05)
 		
 		#input
 
@@ -79,21 +80,21 @@ class CraneAssignments (Module):
 		#get,stage = 1
 		#go to z 3
 		self.Z.set(1,self.stage == 1 and self.assignment == 2)
-		self.incrementStage.set(1,self.zPosition > 2.95 and self.stage == 1 and self.assignment == 2)
+		self.incrementStage.set(1,self.zPosition > 3-self.accuracy._state and self.stage == 1 and self.assignment == 2)
 		#go to sety,go to setx
 		self.Y.set(max(-1,min(1,self.setY-self.yPosition)),self.stage == 2 and self.assignment == 2)
 		self.X.set(max(-1,min(1,self.setX-self.xPosition)),self.stage == 2 and self.assignment == 2)
-		self.incrementStage.set(1,self.yPosition > self.setY-0.01 and self.yPosition < self.setY+0.01 and self.xPosition > self.setX-0.01 and self.xPosition < self.setX+0.01 and self.stage == 2 and self.assignment == 2)
+		self.incrementStage.set(1,self.yPosition > self.setY-self.accuracy and self.yPosition < self.setY+self.accuracy and self.xPosition > self.setX-self.accuracy and self.xPosition < self.setX+self.accuracy and self.stage == 2 and self.assignment == 2)
 		#go to setZ, spreader setSize
 		self.Z.set(max(-1,min(1,self.setZ-self.zPosition)),self.stage == 3 and self.assignment == 2)
 		self.SpreaderWidth.set(self.setSize, self.stage == 3 and self.assignment == 2)
-		self.incrementStage.set(1,self.zPosition > self.setZ-0.01 and self.zPosition < self.setZ+0.01 and self.spreaderPosition == self.SpreaderWidth and self.stage == 3 and self.assignment == 2)
+		self.incrementStage.set(1,self.zPosition > self.setZ-self.accuracy and self.zPosition < self.setZ+self.accuracy and self.spreaderPosition == self.SpreaderWidth and self.stage == 3 and self.assignment == 2)
 		#speaderlock 1
 		self.LockSpreader.mark(1,self.stage == 4 and self.assignment == 2)
 		self.incrementStage.set(1, self.spreaderLock == 1 and self.stage == 4 and self.assignment == 2)
 		#go to z 3
 		self.Z.set(1,self.stage == 5 and self.assignment == 2)
-		self.incrementStage.set(1,self.zPosition > 2.95 and self.stage == 5 and self.assignment == 2)
+		self.incrementStage.set(1,self.zPosition > 3-self.accuracy._state and self.stage == 5 and self.assignment == 2)
 		#go = 0
 		self.go.set(0,self.stage == 6 and self.assignment == 2)
 		self.stage.set(0,self.stage == 6 and self.assignment == 2)
