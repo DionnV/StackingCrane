@@ -100,9 +100,9 @@ class CraneControl (Module):
 
 
 	def moveX(self):
-		self.xMotor.set(1, self.X == 1)
+		self.xMotor.set(max(min(1,30-self.xPosition._state),0.3), self.X == 1)
 		self.xMotor.set(0, self.X == 0)
-		self.xMotor.set(-1, self.X == -1)
+		self.xMotor.set(-max(min(1,self.xPosition._state),0.3), self.X == -1)
 
 		# check if cablereel is turning 
 		self.xMotor.set(0, self.xVelocity > 0.1 and self.cableReelMoving == 0)
