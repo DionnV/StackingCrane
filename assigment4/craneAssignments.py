@@ -106,19 +106,19 @@ class CraneAssignments (Module):
 		
 		#go to y 4
 		self.Y.set(max(-1,min(1, 3 - self.yPosition._state)), self.stage == 2 and self.assignment == 1)
-		self.incrementStage.set(1, self.yPosition > 3.9 and self.yPosition < 4.1 and self.stage == 2 and self.assignment == 1)
+		self.incrementStage.set(1, self.yPosition > 2.9 and self.yPosition < 3.1 and self.stage == 2 and self.assignment == 1)
 		
 		#go to setX
 		self.X.set(max(-1,min(1, self.setX - self.xPosition)), self.stage == 3 and self.assignment == 1)
-		self.incrementStage.set(1, (self.setX > self.xPosition - 0.1 and self.setX < self.xPosition + 0.1) and self.stage == 3 and self.assignment == 1)
+		self.incrementStage.set(1, (self.xPosition > self.setX - 0.1 and self.xPosition < self.setX + 0.1) and self.stage == 3 and self.assignment == 1)
 		
 		#go to setY
 		self.Y.set(max(-1,min(1, self.setY - self.yPosition)), self.stage == 4 and self.assignment == 1)
-		self.incrementStage.set(1, (self.setY > self.yPosition - 0.1 and self.setY < self.yPosition + 0.1) and self.stage == 4 and self.assignment == 1)
+		self.incrementStage.set(1, (self.yPosition > self.setY - 0.1 and self.yPosition < self.setY + 0.1) and self.stage == 4 and self.assignment == 1)
 		
 		#go to setZ
 		self.Z.set(max(-1,min(1, self.setZ - self.zPosition)), self.stage == 5 and self.assignment == 1)
-		self.incrementStage.set(1, (self.setZ > self.zPosition - 0.1 and self.setZ < self.zPosition + 0.1) and self.stage == 5 and self.assignment == 1)
+		self.incrementStage.set(1, (self.zPosition > self.setZ - 0.1 and self.zPosition < self.setZ + 0.1) and self.stage == 5 and self.assignment == 1)
 		
 		#speaderlock 0
 		self.LockSpreader.mark(0, self.stage == 6 and self.assignment == 1)
