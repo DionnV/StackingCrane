@@ -111,9 +111,9 @@ class CraneControl (Module):
 		self.xMotor.set(0, self.zPosition >= 0.1)
 		self.X.set(0, self.zPosition >= 0.1)
 
-		# Do not move when something else is moving
-		self.xMotor.set(0, self.platformBackMoving == 1 or self.platformFrontMoving == 1)
-		self.X.set(0, self.platformBackMoving == 1 or self.platformFrontMoving == 1)
+		# Do not move when something else is moving and crane is near
+		self.xMotor.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
+		self.X.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
 
 		# Endstops
 		self.xMotor.set(0, self.endStopBack == 1 and self.X == 1)
