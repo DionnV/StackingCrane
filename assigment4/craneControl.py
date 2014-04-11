@@ -75,9 +75,9 @@ class CraneControl (Module):
 		self.emergencyBrake = Register(0) # 1 or 0
 
 	def input (self, world):
-		self.X.set(world.craneAssigments.putX)
-		self.Y.set(world.craneAssigments.putY)
-		self.Z.set(world.craneAssigments.putZ)
+		self.X.set(world.craneAssignments.putX)
+		self.Y.set(world.craneAssignments.putY)
+		self.Z.set(world.craneAssignments.putZ)
 
 		self.xPosition.set(world.crane.xPosition)
 		self.yPosition.set(world.crane.yPosition)
