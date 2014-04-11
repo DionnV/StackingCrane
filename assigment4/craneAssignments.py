@@ -83,9 +83,9 @@ class CraneAssignments (Module):
 		self.X.set(max(-1,min(1,self.setX-self.xPosition)),self.stage == 2 and self.assignment == 2)
 		self.incrementStage.set(1,self.yPosition > self.setY-0.01 and self.yPosition < self.setY+0.01 and self.xPosition > self.setX-0.01 and self.xPosition < self.setX+0.01 and self.stage == 2 and self.assignment == 2)
 		#go to setZ, spreader setSize
-		self.Z.set(max(-1,min(1,self.setZ-self.zPosition)),self.stage == 3 and self.assigment == 2)
-		self.SpreaderWidth.set(self.setSize, self.stage == 3 and self.assigment == 2)
-		self.incrementStage.set(1,self.zPosition > self.setZ-0.01 and self.zPosition < self.setZ+0.01 and self.spreaderPosition == self.SpreaderWidth and self.stage == 2 and self.assigment == 2)
+		self.Z.set(max(-1,min(1,self.setZ-self.zPosition)),self.stage == 3 and self.assignment == 2)
+		self.SpreaderWidth.set(self.setSize, self.stage == 3 and self.assignment == 2)
+		self.incrementStage.set(1,self.zPosition > self.setZ-0.01 and self.zPosition < self.setZ+0.01 and self.spreaderPosition == self.SpreaderWidth and self.stage == 3 and self.assignment == 2)
 		#speaderlock 1
 		#go to z 3
 		#go = 0
