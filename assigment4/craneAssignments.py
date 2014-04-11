@@ -74,6 +74,7 @@ class CraneAssignments (Module):
 		self.X.set(0)
 		self.Y.set(0)
 		self.Z.set(0)
+		self.setZ.set(1,self.setZ < 1)
 		
 		self.stage.set(1,self.go == 1 and self.stage == 0)
 
