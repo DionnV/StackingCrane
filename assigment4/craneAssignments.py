@@ -104,11 +104,11 @@ class CraneAssignments (Module):
 		self.incrementStage.set(1, (self.setX > self.xPosition - 0.1 and self.setX < self.xPosition + 0.1) and self.stage == 3 and self.assignment == 1)
 		
 		#go to setY
-		self.X.set(max(-1,min(1, self.setY - self.yPosition)), self.stage == 4 and self.assignment == 1)
+		self.Y.set(max(-1,min(1, self.setY - self.yPosition)), self.stage == 4 and self.assignment == 1)
 		self.incrementStage.set(1, (self.setY > self.yPosition - 0.1 and self.setY < self.yPosition + 0.1) and self.stage == 4 and self.assignment == 1)
 		
 		#go to setZ
-		self.X.set(max(-1,min(1, self.setZ - self.zPosition)), self.stage == 5 and self.assignment == 1)
+		self.Z.set(max(-1,min(1, self.setZ - self.zPosition)), self.stage == 5 and self.assignment == 1)
 		self.incrementStage.set(1, (self.setZ > self.zPosition - 0.1 and self.setZ < self.zPosition + 0.1) and self.stage == 5 and self.assignment == 1)
 		
 		#speaderlock 0
