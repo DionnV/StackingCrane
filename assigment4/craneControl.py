@@ -150,7 +150,7 @@ class CraneControl (Module):
 
 
 	def moveZ(self):
-		self.zMotor.set(max(min(1,3-self.zPosition._state),0.3)*self.Z._state, self.Z < 0  and self.Z >= -1)
+		self.zMotor.set(max(min(1,3-self.zPosition._state),0.3)*self.Z._state, self.Z > 0  and self.Z <= 1)
 		self.zMotor.set(0, self.Z == 0)
 		self.zMotor.set(max(min(1,self.zPosition._state),0.3)*self.Z._state, self.Z < 0  and self.Z >= -1)
 
