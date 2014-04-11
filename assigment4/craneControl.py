@@ -75,6 +75,10 @@ class CraneControl (Module):
 		self.emergencyBrake = Register(0) # 1 or 0
 
 	def input (self, world):
+		self.X.set(world.craneAssigments.putX)
+		self.Y.set(world.craneAssigments.putY)
+		self.Z.set(world.craneAssigments.putZ)
+
 		self.xPosition.set(world.crane.xPosition)
 		self.yPosition.set(world.crane.yPosition)
 		self.zPosition.set(world.crane.zPosition)
@@ -103,9 +107,9 @@ class CraneControl (Module):
 
 
 	def moveX(self):
-		self.xMotor.set(max(min(1,30-self.xPosition._state),0.3), self.X == 1)
+		self.xMotor.set(max(min(1,30-self.xPosition._state),0.3)*self.X._state, self.X > 0 and self.X <= 1)
 		self.xMotor.set(0, self.X == 0)
-		self.xMotor.set(-max(min(1,self.xPosition._state),0.3), self.X == -1)
+		self.xMotor.set(-max(min(1,self.xPosition._state),0.3)*self.X._state, self.X < 0  and self.X >= -1)
 
 		# check if cablereel is turning 
 		self.xMotor.set(0, self.xVelocity > 0.1 and self.cableReelMoving == 0)
@@ -125,9 +129,9 @@ class CraneControl (Module):
 		self.X.set(0, self.endStopFront == 1 and self.X == -1)		
 
 	def moveY(self):
-		self.yMotor.set(max(min(1,4-self.yPosition._state),0.3), self.Y == 1)
+		self.yMotor.set(max(min(1,4-self.yPosition._state),0.3)*self.Y._state, self.Y > 0  and self.Y >= -1)
 		self.yMotor.set(0, self.Y == 0)
-		self.yMotor.set(-max(min(1,self.yPosition._state),0.3), self.Y == -1)
+		self.yMotor.set(max(min(1,self.yPosition._state),0.3)*self.Y._state, self.Y < 0  and self.Y >= -1)
 
 		# Only move if spreader is at the top
 		self.yMotor.set(0, self.zPosition < 2.9)
@@ -144,9 +148,9 @@ class CraneControl (Module):
 
 
 	def moveZ(self):
-		self.zMotor.set(max(min(1,3-self.zPosition._state),0.3), self.Z == 1)
+		self.zMotor.set(max(min(1,3-self.zPosition._state),0.3)*self.Z._state, self.Z < 0  and self.Z >= -1)
 		self.zMotor.set(0, self.Z == 0)
-		self.zMotor.set(-max(min(1,self.zPosition._state),0.3), self.Z == -1)
+		self.zMotor.set(-max(min(1,self.zPosition._state),0.3)*self.Z._state, self.Z < 0  and self.Z >= -1)
 
 		# Do not move when something else is moving
 		self.zMotor.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
