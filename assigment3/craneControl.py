@@ -111,8 +111,8 @@ class CraneControl (Module):
 		self.xMotor.set(0, self.xVelocity > 0.1 and self.cableReelMoving == 0)
 
 		# Only move if spreader is at the top
-		self.xMotor.set(0, self.zPosition >= 0.1)
-		self.X.set(0, self.zPosition >= 0.1)
+		self.xMotor.set(0, self.zPosition < 2.9)
+		self.X.set(0, self.zPosition < 2.9)
 
 		# Do not move when something else is moving and crane is near
 		self.xMotor.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
@@ -130,8 +130,8 @@ class CraneControl (Module):
 		self.yMotor.set(-max(min(1,self.yPosition._state),0.3), self.Y == -1)
 
 		# Only move if spreader is at the top
-		self.yMotor.set(0, self.zPosition > 0.1)
-		self.Y.set(0, self.zPosition > 0.1)
+		self.yMotor.set(0, self.zPosition < 2.9)
+		self.Y.set(0, self.zPosition < 2.9)
 
 		# Do not move when something else is moving
 		self.yMotor.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
@@ -151,6 +151,8 @@ class CraneControl (Module):
 		# Do not move when something else is moving
 		self.zMotor.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
 		self.Z.set(0, (self.platformBackMoving == 1 and self.xPosition > 28.5) or (self.platformFrontMoving == 1 and self.xPosition < 1.5))
+
+		self.SpeaderSizeError.set(1,self.zPosition < 1 and self.spreaderCanLock == 0,0)
 
 		self.zMotor.set(0, self.zPosition > 2.95 and self.Z == 1)
 		self.Z.set(0, self.zPosition > 2.95 and self.Z == 1)

@@ -50,7 +50,7 @@ class Crane(Module):
 		self.group ('Z', True)
 		self.zMotor = Register(0)
 		self.zFriction = Register(0)
-		self.zPosition = Register(0)
+		self.zPosition = Register(3)
 		self.zSpeed = Register(0)
 		self.zMaxSpeed = Register(1)
 
